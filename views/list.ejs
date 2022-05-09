@@ -9,7 +9,7 @@
 </head>
 <body>
     <DIV class ="box" id = "heading">
-        <h1><%= dayOfTheWeek %></h1>
+        <h1><%= title%></h1>
     </DIV>
 
    <div class="box">
@@ -25,7 +25,7 @@
       
       <form action="/" method="post">
           <input type="text" name="newItem" placeholder="newItem" autocomplete="off" >
-          <button type="submit" name="button">+</button>    
+          <button type="submit" name="list" value=<%= title%>>+</button>    
       </form>
 
    </div>
