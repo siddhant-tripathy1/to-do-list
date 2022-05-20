@@ -1,8 +1,30 @@
 const bodyParser = require("body-parser")
 const express = require("express")
+const mongoose = require("mongoose")
+mongoose.connect("mongodb://localhost:27017/todolistDB" )
+const taskSchema = {
+    name: String, 
+}
+const Task = mongoose.model("item", taskSchema)
+const Task_1 = new Task ({
+    name : "read books "
+})
+const Task_2 = new Task ({
+    name : "Eat clean "
+})
+const Task_3 = new Task ({
+    name : "Pump iron  "
+})
+const startingTask  = [Task_1, Task_2,Task_3]
+Task.insertMany(startingTask, function(err){
+    if (err){
+        console.log(err)
+     } else {
+         console.log("yess")
+     }
 
+})
 const app = express()
-let items = []
 let workItem = []
 app.set('view engine','ejs')
 app.use(bodyParser.urlencoded({extended: true}))
