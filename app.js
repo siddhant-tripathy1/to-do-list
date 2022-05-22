@@ -5,6 +5,11 @@ mongoose.connect("mongodb://localhost:27017/todolistDB" )
 const taskSchema = {
 	name: String, 
 }
+const listSchema = {
+	name: String,
+	items: [taskSchema]
+}
+const List= mongoose.model("List", listSchema)
 const Task = mongoose.model("item", taskSchema)
 const Task_1 = new Task ({
 	name : "read books "
@@ -15,6 +20,7 @@ const Task_2 = new Task ({
 const Task_3 = new Task ({
 	name : "Pump iron  "
 })
+const startingTask  = [Task_1, Task_2,Task_3]
 const app = express()
 let workItem = []
 app.set('view engine','ejs')
@@ -24,7 +30,6 @@ app.get ("/",function(req,res){
 	
 	Task.find({}, function(err,found){
 		if(found.length === 0){
-			const startingTask  = [Task_1, Task_2,Task_3]
 			Task.insertMany(startingTask, function(err){
 				if (err){
 					console.log(err)
@@ -43,11 +48,28 @@ app.get ("/",function(req,res){
 })
 
 
-app.get("/work", function(req,res){
-	res.render("list",{title:"Work day", items: workItem})
+app.get("/:getRouteParam", function(req,res){
+	const customList = req.params.getRouteParam
+	List.findOne({name: customList}, function(err,FoundList){
+		if(!err){
+			if(!FoundList){
 
+				const list = new List({
+					name: customList,
+					items: startingTask
+				})
+				list.save()
+				res.redirect("/" + customList)
+			} else{
+				res.render("list", {
+					title: FoundList.name,
+					items: FoundList.items
+				})
+				
+			}
+		}
+	})
 })
-
 app.post("/delete", function(req,res){
 	checkedItemId = req.body.checkbox
 	Task.findByIdAndDelete(checkedItemId, function(err){
