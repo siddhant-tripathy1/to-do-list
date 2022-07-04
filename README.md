@@ -1,2 +1,4 @@
 # to-do-list
-It is a simple todo list where you can add your daily routine to complite
+This application is simple To-do-List where you could store your task and remove it after completion 
+Made it usinng : 
+HTML,CSS JavaScript,ejs and mongoDB
